@@ -1,0 +1,9 @@
+DB CONNECTION:
+    psql postgres://admin:Lux0n1s@db:5432/ScraperDB
+    psql postgres://admin:Lux0n1s@127.0.0.1:6666/ScraperDB
+
+
+TEST REQUESTS:
+
+    HEALTHCHECK:
+    curl http://127.0.0.1:8080/scraper-api/v1/healthz

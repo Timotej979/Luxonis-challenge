@@ -1,0 +1,36 @@
+/* index.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+#apartment-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Ensure items wrap to the next line */
+    justify-content: space-around; /* Adjusted to create a more evenly spaced grid */
+}
+
+.apartment-item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px; /* Set a fixed width for each item */
+}
+
+.apartment-item img {
+    max-width: 100%; /* Ensure images are responsive within the fixed width */
+    max-height: 200px;
+    margin-bottom: 10px;
+}
+
+/* Media query for smaller screens (adjust the breakpoint as needed) */
+@media screen and (max-width: 600px) {
+    .apartment-item {
+        width: 100%; /* Set full width for each item on smaller screens */
+    }
+}
+

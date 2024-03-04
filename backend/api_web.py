@@ -60,6 +60,17 @@ def get_flats():
         log.error(f"Error getting flats: {str(e)}")
         return json.dumps({"status": "error", "message": str(e)}), 500
 
+@app.route(f"{URL_PREFIX}/clear-flats", methods=["DELETE"])
+def clear_flats():
+    try:
+        Flats.query.delete()
+        db.session.commit()
+        return json.dumps({"status": "success"}), 200
+    except Exception as e:
+        log.error(f"Error clearing flats: {str(e)}")
+        return json.dumps({"status": "error", "message": str(e)}), 500
+
+
 
 if __name__ == '__main__':
     # Depending on the config set prod or dev mode

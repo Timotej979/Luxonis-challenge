@@ -4,76 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apartment Listings</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        #apartment-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .apartment-item {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .apartment-item img {
-            max-width: 100px;
-            max-height: 100px;
-            margin-right: 10px;
-        }
-    </style>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 
     <h1>Apartment Listings</h1>
 
+    <!-- Input field for the number of apartments -->
+    <label for="itemCount">Number of Apartments:</label>
+    <input type="number" id="itemCount" name="itemCount" value="600">
+
+    <button onclick="startCrawler()">Start Crawler</button>
+
+    <button onclick="deleteAllApartments()">Delete All Apartments</button>
+
     <ul id="apartment-list"></ul>
-
-    <script>
-        // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint URL
-        const apiEndpoint = 'http://127.0.0.1:8080/scraper-api/v1/flat-items';
-
-        // Function to fetch apartment data from the API
-        async function fetchApartments() {
-            try {
-                const response = await fetch(apiEndpoint);
-                const data = await response.json();
-                displayApartments(data);
-            } catch (error) {
-                console.error('Error fetching apartment data:', error);
-            }
-        }
-
-        // Function to display apartment data on the page
-        function displayApartments(apartments) {
-            const apartmentList = document.getElementById('apartment-list');
-
-            apartments.forEach(apartment => {
-                const listItem = document.createElement('li');
-                listItem.className = 'apartment-item';
-
-                const title = document.createElement('h2');
-                title.textContent = apartment.title;
-
-                const image = document.createElement('img');
-                image.src = apartment.image;
-                image.alt = apartment.title;
-
-                listItem.appendChild(image);
-                listItem.appendChild(title);
-                apartmentList.appendChild(listItem);
-            });
-        }
-
-        // Fetch apartments when the page loads
-        document.addEventListener('DOMContentLoaded', fetchApartments);
-    </script>
 
 </body>
 </html>

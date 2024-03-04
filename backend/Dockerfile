@@ -12,7 +12,7 @@ RUN apt-get update && \
 ENV PATH=/root/.local/bin:$PATH
 
 ###################### Set workdir in docker container and copy files over ###################### 
-WORKDIR /api
+WORKDIR /app
 COPY pyproject.toml ./
 
 ###################### Configure poetry and install desired packages ######################
@@ -20,4 +20,4 @@ RUN poetry config virtualenvs.in-project true --local && \
     poetry install --only main
 
 ###################### Copy python files over ######################
-COPY . /api
+COPY . /app

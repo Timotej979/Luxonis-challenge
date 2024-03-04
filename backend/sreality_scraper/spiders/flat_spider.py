@@ -7,12 +7,9 @@ from scrapy.exceptions import CloseSpider
 class FlatAdSpider(scrapy.Spider):
     name = 'flat_ad_spider'
     flats_loaded = 0
-
-    def __init__(self, item_count=500, *args, **kwargs):
-        super(FlatAdSpider, self).__init__(*args, **kwargs)
-        self.flats_to_load = item_count
-        start_urls = [
-            f'https://www.sreality.cz/api/cs/v2/estates?category_main_cb=1&category_type_cb=1&per_page={self.flats_to_load}&tms=1687358646532'
+    flats_to_load = 500
+    start_urls = [
+            f'https://www.sreality.cz/api/cs/v2/estates?category_main_cb=1&category_type_cb=1&per_page={flats_to_load}&tms=1687358646532'
         ]
 
     def parse(self, response, **kwargs):

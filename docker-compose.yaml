@@ -7,7 +7,7 @@ services:
     image: "scraper-api:v1"
     restart: unless-stopped
 
-    command: sh -c "poetry run python /api/api.py"
+    command: sh -c "poetry run python /app/api_web.py"
 
     build:
       context: ./backend
@@ -22,7 +22,7 @@ services:
     environment:
       - APP_CONFIG=${APP_CONFIG}
       - API_URL_PREFIX=${API_URL_PREFIX}
-      - API_DB_CONNECTION_STRING=postgresql+asyncpg://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@db:5432/${APP_DB_DBNAME}
+      - API_DB_CONNECTION_STRING=postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@db:5432/${APP_DB_DBNAME}
       - API_DB_MAX_CONNECTIONS=${API_DB_MAX_CONNECTIONS}
       - API_DB_POOL_RECYCLE=${API_DB_POOL_RECYCLE}
       - API_DB_MAX_OVERFLOW=${API_DB_MAX_OVERFLOW}
@@ -45,9 +45,6 @@ services:
     # Comment out ports here if you do not want outside DB access
     ports:
       - ${APP_DB_OUT_PORT}:5432
-
-    volumes:
-      - ./db/data:/var/lib/postgresql/data/
 
 
   # Reverse proxy service

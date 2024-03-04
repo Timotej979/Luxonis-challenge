@@ -36,7 +36,7 @@ COOKIES_ENABLED = True
 REDIRECT_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
-#TELNETCONSOLE_ENABLED = False
+TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
 #DEFAULT_REQUEST_HEADERS = {
@@ -64,9 +64,9 @@ REDIRECT_ENABLED = False
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "sreality_scraper.pipelines.SrealityScraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "sreality_scraper.pipelines.SrealityScraperPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

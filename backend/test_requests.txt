@@ -5,8 +5,5 @@ DB CONNECTION:
 
 TEST REQUESTS:
 
-    HEALTHCHECK:
-    curl http://127.0.0.1:8080/scraper-api/v1/healthz
-
     START CRAWLER
-    curl --request POST --header "Content-Type: application/json" --data '{"item_count": 600}' http://127.0.0.1:8080/scraper-api/v1/startCrawler
+    curl --request POST --header "Content-Type: application/json" --data '{"item_count": 600}' http://127.0.0.1:8080/scraper-api/v1/start-scraper

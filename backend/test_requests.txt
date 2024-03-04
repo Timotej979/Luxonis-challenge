@@ -9,4 +9,7 @@ TEST REQUESTS:
     curl --request POST --header "Content-Type: application/json" --data '{"item_count": 600}' http://127.0.0.1:8080/scraper-api/v1/start-scraper
 
     GET FLAT ITEMS
-    curl --request GET --header "Content-Type: application/json" http://127.0.0.1>8080/scraper-api/v1/flat-items
+    curl --request GET --header "Content-Type: application/json" http://127.0.0.1:8080/scraper-api/v1/flat-items
+
+    DELETE FLAT ITEMS
+    curl --request DELETE --header "Content-Type: application/json" http://127.0.0.1:8080/scraper-api/v1/clear-flats

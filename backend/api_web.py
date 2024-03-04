@@ -25,12 +25,6 @@ from sreality_scraper.spiders.flat_spider import FlatAdSpider
 APP_CONFIG = os.getenv("APP_CONFIG")
 URL_PREFIX = os.getenv("API_URL_PREFIX")
 DB_URI = str(os.getenv("API_DB_CONNECTION_STRING"))
-DB_MAX_CONNECTIONS = int(os.getenv("API_DB_MAX_CONNECTIONS"))
-DB_POOL_RECYCLE = int(os.getenv("API_DB_POOL_RECYCLE"))
-DB_MAX_OVERFLOW = int(os.getenv("API_DB_MAX_OVERFLOW"))
-DB_POOL_TIMEOUT = int(os.getenv("API_DB_POOL_TIMEOUT"))
-
-
 
 # Gloabl variables to store the Flask app and the DB connection pool
 app = Flask('SrealityScraperAPI')
@@ -45,29 +39,6 @@ class Flats(db.Model):
     title = db.Column(db.String(255))
     image = db.Column(db.String(255))
 
-
-# Custom CrawlerScript class for running the scraper in a separate process
-class CrawlerScript(Process):
-    def __init__(self, spider):
-        Process.__init__(self)
-        settings = get_project_settings()
-        self.crawler = Crawler(spidercls=FlatAdSpider, settings=settings)
-        self.crawler.configure()
-        self.crawler.signals.connect(reactor.stop, signal=signals.spider_closed)
-        self.spider = spider
-
-    def run(self):
-        self.crawler.crawl(self.spider)
-        self.crawler.start()
-        reactor.run()
-
-def run_spider():
-    spider = FlatAdSpider()
-    crawler = CrawlerScript(spider)
-    crawler.start()
-    crawler.join()
-
-
 # Define the API routes
 @app.route(f"{URL_PREFIX}/start-scraper", methods=["POST"])
 def start_scraper():
@@ -78,6 +49,15 @@ def start_scraper():
         return json.dumps({"status": "success"}), 200
     except Exception as e:
         log.error(f"Error starting the scraper: {str(e)}")
+        return json.dumps({"status": "error", "message": str(e)}), 500
+
+@app.route(f"{URL_PREFIX}/flat-items", methods=["GET"])
+def get_flats():
+    try:
+        flats = Flats.query.all()
+        return json.dumps([{"title": flat.title, "image": flat.image} for flat in flats]), 200
+    except Exception as e:
+        log.error(f"Error getting flats: {str(e)}")
         return json.dumps({"status": "error", "message": str(e)}), 500
 
 

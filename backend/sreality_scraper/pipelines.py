@@ -1,31 +1,33 @@
 import os
-
+import logging
 import psycopg2
+from psycopg2 import sql
 from urllib.parse import urlparse
 from itemadapter import ItemAdapter
 
 class SrealityScraperPipeline:
     DB_URI = os.getenv("API_DB_CONNECTION_STRING")
 
-    INSERT_ITEM_QUERY = """
-        INSERT INTO flat_ads (title, image) VALUES ($1, $2)
-    """
+    INSERT_QUERY = sql.SQL(
+        "INSERT INTO flat_ads (title, image) VALUES (%s, %s) ON CONFLICT DO NOTHING"
+    )
 
     def __init__(self):
         # Extract connection parameters from the DB URI
         self.params = urlparse(self.DB_URI)
         self.pg_connection_dict = {
-            'dbname': params.hostname,
-            'user': params.username,
-            'password': params.password,
-            'port': params.port,
-            'host': params.scheme
+            'dbname': self.params.path[1:],
+            'user': self.params.username,
+            'password': self.params.password,
+            'port': self.params.port,
+            'host': self.params.hostname
         }
         # Create a connection and a cursor
         self.conn = None
         self.cursor = None
 
     def open_spider(self, spider):
+        # Connect to the DB and get the cursor
         self.conn = psycopg2.connect(**self.pg_connection_dict)
         self.cursor = self.conn.cursor()
 
@@ -36,8 +38,13 @@ class SrealityScraperPipeline:
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        if isinstance(str, adapter.get('title')) and isinstance(str, adapter.get('image')):
-            self.conn.execute(self.INSERT_ITEM_QUERY, (adapter.get('title'), adapter.get('image')))
+        # Extract the title and image from the item
+        title = adapter.get('title')
+        image = adapter.get('image')
+        # Check if the item is valid
+        if isinstance(title, str) and isinstance(image, str):
+            # Insert the item into the DB
+            self.cursor.execute(self.INSERT_QUERY, (title, image))
         else:
-            raise ValueError('Invalid item data')
+            logging.error(f"Invalid item: {item}")
         return item

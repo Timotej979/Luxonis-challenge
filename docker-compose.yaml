@@ -23,12 +23,8 @@ services:
       - APP_CONFIG=${APP_CONFIG}
       - API_URL_PREFIX=${API_URL_PREFIX}
       - API_DB_CONNECTION_STRING=postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@db:5432/${APP_DB_DBNAME}
-      - API_DB_MAX_CONNECTIONS=${API_DB_MAX_CONNECTIONS}
-      - API_DB_POOL_RECYCLE=${API_DB_POOL_RECYCLE}
-      - API_DB_MAX_OVERFLOW=${API_DB_MAX_OVERFLOW}
-      - API_DB_POOL_TIMEOUT=${API_DB_POOL_TIMEOUT}
   
-
+  
   # Database service
   db:
     image: postgres:15.6

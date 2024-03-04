@@ -6,8 +6,16 @@ import aiohttp_sqlalchemy as ahsa
 from aiohttp import web
 from sqlalchemy.ext.asyncio import create_async_engine
 
-#from db.dal import DAL
-from db.db_model import metadata
+# DB imports
+# from db_abstraction.dal import DAL
+from db_abstraction.db_model import metadata
+
+# Scraper imports
+from sreality_scraper.sreality_scraper.spiders.flat_spider import FlatAdSpider
+from scrapy.settings import Settings
+from scrapy.crawler import CrawlerRunner
+from twisted.internet import reactor
+from scrapy.utils.reactor import install_reactor
 
 
 # Get environment variables
@@ -38,7 +46,46 @@ class API_Server():
 
 
     ######################################################## API METHODS ###############################################################
-    # TODO: Add API methods here
+    @routes.post('/startCrawler')
+    async def start_crawler(request):
+        log.info("POST staring the crawler\n")
+
+        try:
+            # Fetch the request data
+            res_data = await request.json()
+            item_count = res_data['item_count']
+
+            # Check if the item_count is an integer
+            if not isinstance(item_count, int):
+                log.error("!! POST starting the crawler error: Item count is not an integer !!\n")
+                return web.HTTPBadRequest("!! POST starting the crawler error: Item count is not an integer !!\n")
+
+        except:
+            log.exception("!! POST starting the crawler error: Couldn't fetch request data !!\n")
+            return web.HTTPBadRequest("!! POST starting the crawler error: Couldn't fetch request data !!\n")
+        else:
+            # Set the number of flats to load
+            log.info("POST starting the crawler: Item count set to: {}\n".format(item_count))
+            kwargs = {'NUM_OF_FLATS': item_count}
+
+            # Set up the crawler
+            crawler_settings = Settings()
+            crawler_settings.setmodule('sreality_scraper.sreality_scraper.settings')
+
+            # Offload the crawler task to the event loop
+            loop = asyncio.get_event_loop()
+
+            # Pass custom argument to the spider using the kwargs parameter
+            kwargs = {'item_count': item_count}
+            crawler_runner = CrawlerRunner(crawler_settings)
+
+            # Run the Twisted reactor in a separate thread
+            await loop.run_in_executor(None, lambda: reactor.run(installSignalHandlers=0))
+
+            # Run the crawl coroutine in the event loop
+            await loop.run_in_executor(None, lambda: asyncio.run_coroutine_threadsafe(crawler_runner.crawl(FlatAdSpider, **kwargs), loop))
+
+            return web.Response(text="## Crawler started ##\n")
 
 
 
@@ -68,7 +115,7 @@ class API_Server():
         log.info("Adding routes to application object")
         self.subapp.router.add_routes(self.routes)
 
-        # Add sub-app to set the IP/recognition-api request
+        # Add sub-app to set the IP/sreality-api request
         self.app = web.Application()
         self.app.add_subapp(URL_PREFIX, self.subapp)
 
@@ -104,6 +151,9 @@ if __name__ == '__main__':
         log = logging.getLogger()
         log.info("Environment variable APP_CONFIG is not set (Current value is: {}), please set it in  the environment file".format(APP_CONFIG))
         sys.exit(1)
+
+    # Set up asyncio reactor for scrapy
+    install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')
 
     # Get asyncio loop
     loop = asyncio.get_event_loop()

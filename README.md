@@ -13,7 +13,7 @@ The code can be run with a simple start up command:
 docker compose build && docker compose up
 ```
 
-and for shutting the application down you can either kill it (CTRL + C) or shit down all 3 containers from a sepparate CLI:
+and for shutting the application down you can either kill it (CTRL + C) or shut down all 3 containers from a sepparate CLI:
 
 ```bash
 docker stop scraper-nginx:v1 && docker stop scraper-api:v1 && docker stop postgres:15.6

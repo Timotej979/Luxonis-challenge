@@ -1,6 +1,6 @@
 # Luxonis-challenge
 
-Luxonis challenge for building a simple webpage scraper with its own webpage for https://www.sreality.cz/. 
+Luxonis challenge for building a simple webpage scraper with its own webpage running on http://127.0.0.1:8080/ for scraping from the https://www.sreality.cz/. 
 
 ![dashboard.png](./docs/assests/dashboard.png)
 

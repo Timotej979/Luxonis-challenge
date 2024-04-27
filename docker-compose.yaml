@@ -7,6 +7,9 @@ services:
     command: sh -c "poetry run python /app/api_web.py"
     build:
       context: ./backend
+      args:
+      - APP_PYTHON_VERSION
+      - APP_POETRY_VERSION
     depends_on:
       db:
         condition: service_healthy

@@ -1,12 +1,17 @@
-FROM python:3.10
+# Build arguments
+ARG APP_PYTHON_VERSION=3.10.14-alpine3.19
+ARG APP_POETRY_VERSION=1.8.0
 
-###################### Add dependencies for different DB conectors if needed and install poetry ######################
-RUN apt-get update && \ 
-    apt-get install -y curl && \
-    apt-get install -y postgresql-client && \
-    apt-get install -y postgresql-contrib && \
+FROM python:${APP_PYTHON_VERSION}
+
+###################### Add dependencies for different DB connectors if needed and install poetry ######################
+RUN apk update && \ 
+    apk add --no-cache \
+        curl \
+        postgresql-client \
+        postgresql-contrib && \
     python -m pip install --upgrade pip && \
-    curl -sSL https://install.python-poetry.org | python3 - --version "$APP_POETRY_VERSION"
+    curl -sSL https://install.python-poetry.org | python3 - --version=${APP_POETRY_VERSION}
 
 ###################### Add local path ###################### 
 ENV PATH=/root/.local/bin:$PATH

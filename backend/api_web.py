@@ -12,14 +12,6 @@ from flask import Flask, request
 # Subprocess imports
 import subprocess
 
-# Scraper imports
-from scrapy.crawler import Crawler
-from twisted.internet import reactor
-from billiard import Process
-from scrapy.utils.project import get_project_settings
-from scrapy import signals
-from sreality_scraper.spiders.flat_spider import FlatAdSpider
-
 
 # Get environment variables
 APP_CONFIG = os.getenv("APP_CONFIG")

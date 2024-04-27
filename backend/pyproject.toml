@@ -5,16 +5,15 @@ description = "REST API for webpage scraping"
 authors = ["Timotej979"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
-
-psycopg2 = "^2.9.1"
-SQLAlchemy = "^1.4.39"
-flask_sqlalchemy = "^2.5.1"
+python = ">=3.10,<3.12"
 
 flask = "^2.0.1"
 
+psycopg2-binary = "^2.9.1"
+SQLAlchemy = "^1.4.39"
+flask_sqlalchemy = "^2.5.1"
+
 scrapy = "^2.5.1"
-billiard = "3.3.0.22"
 twisted = "^22.4.0"
 
 [tool.poetry.dev-dependencies]

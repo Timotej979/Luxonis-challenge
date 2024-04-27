@@ -40,6 +40,10 @@ class Flats(db.Model):
     image = db.Column(db.String(255))
 
 # Define the API routes
+@app.route(f"{URL_PREFIX}/healthz", methods=["GET"])
+def healthz():
+    return json.dumps({"status": "ok"}), 200
+
 @app.route(f"{URL_PREFIX}/start-scraper", methods=["POST"])
 def start_scraper():
     try:
@@ -70,8 +74,7 @@ def clear_flats():
         log.error(f"Error clearing flats: {str(e)}")
         return json.dumps({"status": "error", "message": str(e)}), 500
 
-
-
+# Main function
 if __name__ == '__main__':
     # Depending on the config set prod or dev mode
     if APP_CONFIG == "prod":

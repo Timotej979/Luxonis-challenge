@@ -4,12 +4,11 @@ services:
   api:
     image: "scraper-api:v1"
     restart: unless-stopped
-    command: sh -c "poetry run python /app/api_web.py"
     build:
       context: ./backend
       args:
-      - APP_PYTHON_VERSION
-      - APP_POETRY_VERSION
+      - API_PYTHON_VERSION
+      - API_POETRY_VERSION
     depends_on:
       db:
         condition: service_healthy

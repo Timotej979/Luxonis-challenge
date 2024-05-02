@@ -10,8 +10,10 @@ function startCrawler() {
 
     fetch(startCrawlerEndpoint, {
         method: 'POST',
+        mode: 'cors',
         headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':'*'
         },
         body: JSON.stringify({ item_count: itemCount }),
     })
@@ -28,9 +30,12 @@ function startCrawler() {
 
 function deleteAllApartments() {
     fetch(clearFlatsEndpoint, {
-        method: 'DELETE',
-    })
-    .then(response => {
+        method: 'DELETE', 
+        mode: 'cors', 
+        headers: {
+            'Access-Control-Allow-Origin':'*'
+        }
+    }).then(response => {
         if (!response.ok) {
             throw new Error('Failed to delete all apartments');
         }
@@ -45,7 +50,17 @@ function deleteAllApartments() {
 
 async function fetchApartments() {
     try {
-        const response = await fetch(getFlatItemsEndpoint);
+        const response = await fetch(getFlatItemsEndpoint, {
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin':'*'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch apartment data');
+            }
+            return response;
+        });
         const data = await response.json();
         displayApartments(data);
     } catch (error) {

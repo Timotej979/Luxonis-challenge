@@ -1,8 +1,10 @@
 [tool.poetry]
-name = "Scraper-API"
+name = "scraper_api"
 version = "1.0"
 description = "REST API for webpage scraping"
 authors = ["Timotej979"]
+readme = "README.md"
+packages = [{include = "scraper_api"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"

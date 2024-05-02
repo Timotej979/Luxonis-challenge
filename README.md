@@ -44,7 +44,6 @@ The API in rough runs the scrapy based scraper in the background via running a s
 Dependency management is done using Poetry as a more standard way instead of python requirements files or various proprietary python environment solvers like conda.
 
 
-
 ### Nginx proxy
 
 The NGINX proxy handles serving of the static webpage which makes requests to the API endpoint depending on the buttons pressed on the webpage. It also features a standard JSON error code list in case we would want to expand the API and add more features. 
